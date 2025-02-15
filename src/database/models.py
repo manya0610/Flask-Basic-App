@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, String
 from src.database import Base, metadata
 
 
-class TestUser(Base):
-    __tablename__ = "test_users"
+class User(Base):
+    __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     email = Column(String(120), unique=True)
