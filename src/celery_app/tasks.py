@@ -6,6 +6,4 @@ def add(_, message):
     print(message)
     for i in range(10):
         print(i)
-    return {
-        "message" : "ok"
-    }
+    return {"message": "ok"}

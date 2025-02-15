@@ -7,10 +7,9 @@ celery_app.config_from_object("configs.celeryconfig")
 
 def create_app():
     app = Flask(__name__)
-    
-    with app.app_context():
-        from .api import api
-        app.register_blueprint(api)
-    
-    return app
+    from src.routes.api_routes import api
 
+    with app.app_context():
+        app.register_blueprint(api)
+
+    return app
