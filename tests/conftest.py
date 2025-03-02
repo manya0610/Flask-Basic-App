@@ -1,7 +1,6 @@
 import pytest
-from sqlalchemy import MetaData, create_engine, text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import MetaData, text
+from sqlalchemy.orm import  sessionmaker
 
 from src.database import (
     Base,

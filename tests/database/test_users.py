@@ -85,7 +85,7 @@ def test_update_user_no_changes():
 
 def test_update_user_failure():
     """Test the case where an exception occurs during update_user."""
-    created_user = create_user("John Doe", "john.doe@example.com")
+    _created_user = create_user("John Doe", "john.doe@example.com")
     
     # Simulate failure (e.g., non-existent user ID)
     user = update_user(999, name="Non-Existent", email="nonexistent@example.com")

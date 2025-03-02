@@ -1,5 +1,4 @@
 from kombu import Queue, Exchange
-import os
 
 
 broker_url = "amqp://localhost:5672"

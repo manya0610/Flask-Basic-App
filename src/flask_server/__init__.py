@@ -5,7 +5,7 @@ celery_app = Celery()
 celery_app.config_from_object("configs.celeryconfig")
 
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
     from src.routes.api_routes import api
 

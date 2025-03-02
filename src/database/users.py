@@ -1,8 +1,7 @@
 import logging
-from typing import List, Optional, Tuple
+from typing import List, Optional, Sequence, Tuple
 
 from sqlalchemy import delete, insert, select, update
-from sqlalchemy.exc import NoResultFound
 
 from src.database import db_session
 from src.database.models import User
@@ -41,8 +40,8 @@ def get_user(id: int) -> Optional[User]:
 def list_users() -> List[User]:
     try:
         query = select(User)
-        response: List[User] = db_session.scalars(query).all()
-        return response
+        response: Sequence[User] = db_session.scalars(query).all()
+        return list(response)
     except Exception as e:
         logger.exception("Error while listing users: %s", str(e))
         return []

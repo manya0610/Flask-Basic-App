@@ -1,10 +1,11 @@
+from typing import Any
 from pydantic import ValidationError
 
 from src.validations.helper import pydantic_error_parser
 from src.validations.user.user_schema import UserSchema
 
 
-def validate_user(data: dict):
+def validate_user(data: dict[Any, Any]) -> tuple[bool, UserSchema | dict[int | str, Any]]:
     try:
         user: UserSchema = UserSchema.model_validate(data)
         return True, user
