@@ -1,3 +1,3 @@
-from celery import Task
-import logging
-import time
+# from celery import Task
+# import logging
+# import time

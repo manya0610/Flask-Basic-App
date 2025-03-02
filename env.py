@@ -1,2 +1,4 @@
-SQLALCHEMY_DATABASE_URL = "postgresql://manish:@localhost:5432/test_db"
-APP_ENV="development"
+import os
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+APP_ENV = os.getenv("APP_ENV")

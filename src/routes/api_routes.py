@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
+
 from src.database.models import User
-from src.services import user_service
+from src.service import user_service
+from src.validations.user.user_validation import validate_user
 
 api = Blueprint("api", __name__)
 
@@ -14,7 +16,11 @@ api = Blueprint("api", __name__)
 def create_user():
     request_json: dict = request.get_json(silent=True)
     if request_json is None:
-        return jsonify({"error": "BAD REQUEST"}), 400
+        return jsonify({"message": "BAD REQUEST"}), 400
+
+    valid, user_schema = validate_user(request_json)
+    if not valid:
+        return jsonify({"message": "BAD REQUEST", "error": user_schema}), 400
 
     name: str = request_json.get("name")
     email: str = request_json.get("email")
@@ -32,7 +38,7 @@ def list_users():
 def get_user(id: int):
     user: User = user_service.get_user(id)
     if user is None:
-        return jsonify({"error": "NOT FOUND"}), 404
+        return jsonify({"message": "NOT FOUND"}), 404
     return jsonify({"user": user.to_dict()})
 
 
@@ -40,11 +46,11 @@ def get_user(id: int):
 def update_user(id: int):
     request_json: dict = request.get_json(silent=True)
     if request_json is None:
-        return jsonify({"error": "BAD REQUEST"}), 400
+        return jsonify({"message": "BAD REQUEST"}), 400
 
     user: User = user_service.get_user(id)
     if user is None:
-        return jsonify({"error": "NOT FOUND"}), 404
+        return jsonify({"message": "NOT FOUND"}), 404
 
     name: str = request_json.get("name")
     email: str = request_json.get("email")
@@ -57,8 +63,8 @@ def update_user(id: int):
 def delete_user(id: int):
     user: User = user_service.get_user(id)
     if user is None:
-        return jsonify({"error": "NOT FOUND"}), 404
+        return jsonify({"message": "NOT FOUND"}), 404
     status, message = user_service.delete_user(id)
-    if status == False:
-        return jsonify({"error": message}), 500
+    if not status:
+        return jsonify({"message": message}), 500
     return 210
