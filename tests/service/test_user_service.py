@@ -1,4 +1,10 @@
-from src.service.user_service import create_user, get_user, list_users, update_user, delete_user
+from src.service.user_service import (
+    create_user,
+    delete_user,
+    get_user,
+    list_users,
+    update_user,
+)
 
 
 # Test Case for `create_user`
@@ -20,10 +26,10 @@ def test_create_user_duplicate_email():
     # Arrange
     name = "John Doe"
     email = "john@example.com"
-    
+
     # Create the first user
     create_user(name, email)
-    
+
     # Act: Try to create another user with the same email
     user = create_user("Jane Doe", email)
 

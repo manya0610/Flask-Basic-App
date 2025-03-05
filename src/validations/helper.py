@@ -2,13 +2,12 @@
 module for helper functions of validations
 """
 
-
 from typing import Any
 
 from pydantic_core import ErrorDetails
 
 
-def pydantic_error_parser(errors: list[ErrorDetails]) -> dict[int|str, Any]:
+def pydantic_error_parser(errors: list[ErrorDetails]) -> dict[int | str, Any]:
     """
     Function to parse errors returned by pydantic and return those in a dict
     Params
@@ -29,7 +28,7 @@ def pydantic_error_parser(errors: list[ErrorDetails]) -> dict[int|str, Any]:
     error_dict : dict
         A dict with parameter name where value is invalid as `key`, and error message as `value`
     """
-    nested_errors:dict[int|str, Any] = {}
+    nested_errors: dict[int | str, Any] = {}
 
     for error in errors:
         loc = error["loc"]

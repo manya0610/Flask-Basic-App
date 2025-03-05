@@ -16,6 +16,7 @@ dependencies = [
     "pytest-cov>=6.0.0",
     "ruff>=0.9.9",
     "sqlalchemy>=2.0.38",
+    "sqlalchemy-utils>=0.41.2",
 ]
 
 

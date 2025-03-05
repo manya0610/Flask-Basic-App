@@ -1,6 +1,6 @@
 import pytest
 from sqlalchemy import MetaData, text
-from sqlalchemy.orm import  sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 from src.database import (
     Base,

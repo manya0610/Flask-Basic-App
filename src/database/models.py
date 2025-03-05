@@ -1,4 +1,5 @@
 from typing import Any
+
 from sqlalchemy import Column, Integer, String
 
 from src.database import Base
@@ -10,7 +11,7 @@ class User(Base):
     name = Column(String(50))
     email = Column(String(120), unique=True)
 
-    def __init__(self, name:str, email:str) -> None:
+    def __init__(self, name: str, email: str) -> None:
         self.name = name
         self.email = email
 
