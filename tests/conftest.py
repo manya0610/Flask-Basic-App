@@ -40,10 +40,10 @@ def test_db_session(init_db):
     # Start a new transaction
     session.begin()
     db_session.session = session
-    print("Session created")
+    # print("Session created")
     yield session
     # Rollback the transaction to leave no changes in the database
-    print("Session rollbacked")
+    # print("Session rollbacked")
     session.rollback()
 
 
@@ -52,7 +52,7 @@ def truncate_tables(test_db_session):
     """Truncate all tables before and after each test"""
     metadata = MetaData()
     metadata.reflect(bind=engine)  # Reflect the schema to get all table names
-    print("Truncating tables")
+    # print("Truncating tables")
     # Truncate all tables
     table_names = [table.name for table in metadata.tables.values()]
     for table_name in table_names:
