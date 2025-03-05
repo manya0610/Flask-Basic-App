@@ -1,9 +1,22 @@
+from typing import Literal, Optional
+
 from pydantic import BaseModel, EmailStr, Field
 
 
 class UserSchema(BaseModel):
-    name: str = Field(min_length=4, max_length=50)
+    name: str = Field(min_length=4, max_length=100)
+    password: str = Field(min_length=8, max_length=100)
     email: EmailStr = Field(max_length=100)
+    roles: list[Literal["user", "admin", "superadmin"]]
+
+
+class UserUpdateSchema(BaseModel):
+    name: Optional[str | None] = Field(default=None, min_length=4, max_length=100)
+    password: Optional[str | None] = Field(default=None, min_length=8, max_length=100)
+    email: Optional[EmailStr | None] = Field(default=None, max_length=100)
+    roles: Optional[list[Literal["user", "admin", "superadmin"]] | None] = Field(
+        default=None
+    )
 
 
 # PASSWORD_REGEX = r"^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[\~\!\@\#\$\%\^\&\*\(\)\_\+\`\-\=\{\}\[\]\"\'\:\;\<\>\,\.\?])[^\s]{8,50}$"

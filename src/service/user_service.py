@@ -5,8 +5,10 @@ from src.database.models import User
 
 
 # Create a user
-def create_user(name: str, email: str) -> Optional[User]:
-    return user_repo.create_user(name, email)
+def create_user(
+    name: str, email: str, password: str, roles: list[str]
+) -> Optional[User]:
+    return user_repo.create_user(name, email, password, roles)
 
 
 # Get a user by ID
@@ -21,9 +23,13 @@ def list_users() -> List[User]:
 
 # Update a user
 def update_user(
-    id: int, name: Optional[str] = None, email: Optional[str] = None
+    id: int,
+    name: Optional[str] = None,
+    email: Optional[str] = None,
+    password: Optional[str] = None,
+    roles: Optional[list] = None,
 ) -> Optional[User]:
-    return user_repo.update_user(id, name, email)
+    return user_repo.update_user(id, name, email, password, roles)
 
 
 # Delete a user

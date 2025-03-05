@@ -56,7 +56,7 @@ def truncate_tables(test_db_session):
     # Truncate all tables
     table_names = [table.name for table in metadata.tables.values()]
     for table_name in table_names:
-        truncate_sql = f"TRUNCATE TABLE {table_name} RESTART IDENTITY CASCADE"
+        truncate_sql = f'TRUNCATE TABLE "{table_name}" RESTART IDENTITY CASCADE'
         test_db_session.execute(text(truncate_sql))  # Execute truncate SQL
 
     # Commit the changes

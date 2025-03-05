@@ -13,3 +13,6 @@ db_setup:
 
 drop_db:
 	python3 -m scripts.db_scripts drop_db
+
+create_db:
+	python3 -m scripts.db_scripts create_db

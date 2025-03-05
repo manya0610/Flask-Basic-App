@@ -11,10 +11,10 @@ from src.service.user_service import (
 def test_create_user_success():
     # Arrange
     name = "John Doe"
-    email = "john@example.com"
-
-    # Act
-    user = create_user(name, email)
+    email = "john.doe@example.com"
+    password = "123456"
+    roles = ["user"]
+    user = create_user(name, email, password, roles)
 
     # Assert
     assert user is not None
@@ -25,13 +25,14 @@ def test_create_user_success():
 def test_create_user_duplicate_email():
     # Arrange
     name = "John Doe"
-    email = "john@example.com"
+    email = "john.doe@example.com"
+    password = "123456"
+    roles = ["user"]
 
-    # Create the first user
-    create_user(name, email)
+    user = create_user(name, email, password, roles)
 
     # Act: Try to create another user with the same email
-    user = create_user("Jane Doe", email)
+    user = create_user("Jane Doe", email, password, roles)
 
     # Assert
     assert user is None  # Assuming duplicate email should return None
@@ -40,7 +41,11 @@ def test_create_user_duplicate_email():
 # Test Case for `get_user`
 def test_get_user_success():
     # Arrange: Create a user
-    user = create_user("John Doe", "john@example.com")
+    name = "John Doe"
+    email = "john.doe@example.com"
+    password = "123456"
+    roles = ["user"]
+    user = create_user(name, email, password, roles)
 
     # Act: Retrieve the user by ID
     retrieved_user = get_user(user.id)
@@ -48,8 +53,8 @@ def test_get_user_success():
     # Assert
     assert retrieved_user is not None
     assert retrieved_user.id == user.id
-    assert retrieved_user.name == "John Doe"
-    assert retrieved_user.email == "john@example.com"
+    assert retrieved_user.name == name
+    assert retrieved_user.email == email
 
 
 def test_get_user_not_found():
@@ -63,8 +68,17 @@ def test_get_user_not_found():
 # Test Case for `list_users`
 def test_list_users():
     # Arrange: Create two users
-    create_user("John Doe", "john@example.com")
-    create_user("Jane Doe", "jane@example.com")
+    user1_name = "John Doe"
+    user1_email = "john.doe@example.com"
+    user1_password = "123456"
+    user1_roles = ["user"]
+
+    user2_name = "Jane Doe"
+    user2_email = "jane.doe@example.com"
+    user2_password = "123456"
+    user2_roles = ["user"]
+    create_user(user1_name, user1_email, user1_password, user1_roles)
+    create_user(user2_name, user2_email, user2_password, user2_roles)
 
     # Act: List all users
     users_list = list_users()
@@ -86,28 +100,48 @@ def test_list_users_empty():
 # Test Case for `update_user`
 def test_update_user_name():
     # Arrange: Create a user
-    user = create_user("John Doe", "john@example.com")
+    name = "John Doe"
+    email = "john.doe@example.com"
+    password = "123456"
+    roles = ["user"]
+    created_user = create_user(name, email, password, roles)
 
     # Act: Update the user's name
-    updated_user = update_user(user.id, name="Updated Name")
+    updated_user = update_user(created_user.id, name="Updated Name")
 
     # Assert
     assert updated_user is not None
     assert updated_user.name == "Updated Name"
-    assert updated_user.email == "john@example.com"
+    assert updated_user.email == email
+    assert updated_user.password == password
+    assert updated_user.roles == roles
 
 
-def test_update_user_email():
+def test_update_user():
     # Arrange: Create a user
-    user = create_user("John Doe", "john@example.com")
+    name = "John Doe"
+    email = "john.doe@example.com"
+    password = "123456"
+    roles = ["user"]
+    created_user = create_user(name, email, password, roles)
 
     # Act: Update the user's email
-    updated_user = update_user(user.id, email="updated@example.com")
+    updated_email = "updated@example.com"
+    updated_password = "12345678"
+    updated_roles = ["superadmin"]
+    updated_user = update_user(
+        created_user.id,
+        email=updated_email,
+        password=updated_password,
+        roles=updated_roles,
+    )
 
     # Assert
     assert updated_user is not None
-    assert updated_user.name == "John Doe"
-    assert updated_user.email == "updated@example.com"
+    assert updated_user.name == name
+    assert updated_user.email == updated_email
+    assert updated_user.password == updated_password
+    assert updated_user.roles == updated_roles
 
 
 def test_update_user_not_found():
@@ -121,7 +155,11 @@ def test_update_user_not_found():
 # Test Case for `delete_user`
 def test_delete_user_success():
     # Arrange: Create a user
-    user = create_user("John Doe", "john@example.com")
+    name = "John Doe"
+    email = "john.doe@example.com"
+    password = "123456"
+    roles = ["user"]
+    user = create_user(name, email, password, roles)
 
     # Act: Delete the user
     success, user_id = delete_user(user.id)

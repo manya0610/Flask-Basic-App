@@ -11,9 +11,13 @@ logger = logging.getLogger(__name__)
 
 
 # Create a user, returning a User object or None
-def create_user(name: str, email: str) -> Optional[User]:
+def create_user(name: str, email: str, password: str, roles: list) -> Optional[User]:
     try:
-        query = insert(User).values(name=name, email=email).returning(User)
+        query = (
+            insert(User)
+            .values(name=name, email=email, password=password, roles=roles)
+            .returning(User)
+        )
         response: Optional[User] = db_session.scalar(query)
         db_session.commit()
         return response
@@ -49,10 +53,14 @@ def list_users() -> List[User]:
 
 # Update a user, returning the updated User object or None
 def update_user(
-    id: int, name: Optional[str] = None, email: Optional[str] = None
+    id: int,
+    name: Optional[str] = None,
+    email: Optional[str] = None,
+    password: Optional[str] = None,
+    roles: Optional[list] = None,
 ) -> Optional[User]:
     try:
-        values = {"name": name, "email": email}
+        values = {"name": name, "email": email, "password": password, "roles": roles}
         values = {key: value for key, value in values.items() if value is not None}
 
         if not values:
