@@ -1,5 +1,12 @@
 import os
 
+
 APP_ENV = os.getenv("APP_ENV")
+
 DATABASE_URL:str = os.getenv("DATABASE_URL")
+
+REDIS_DATABASE_INDEX = int(os.getenv("REDIS_DATABASE_INDEX"), 0)
+REDIS_POOL_MAX_CONNECTIONS = int(os.getenv("REDIS_POOL_MAX_CONNECTIONS"), 10)
+REDIS_URL = os.getenv("REDIS_URL")
+
 ROOT_PATH = os.getenv("ROOT_PATH")

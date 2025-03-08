@@ -14,6 +14,7 @@ dependencies = [
     "pydantic>=2.10.6",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
+    "redis>=5.2.1",
     "ruff>=0.9.9",
     "sqlalchemy>=2.0.38",
     "sqlalchemy-utils>=0.41.2",
