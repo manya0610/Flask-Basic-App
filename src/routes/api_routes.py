@@ -2,6 +2,7 @@ from typing import Any, Literal
 
 from flask import Blueprint, Response, jsonify, request
 
+from src.celery_app import celery_app
 from src.database.models import User
 from src.service import user_service
 from src.validations.user.user_validation import validate_user, validate_user_update
@@ -82,3 +83,9 @@ def delete_user(id: int) -> tuple[Response, Literal[210, 404, 500]]:
     if not status:
         return jsonify({"message": message}), 500
     return jsonify({"message": "Deleted"}), 210
+
+
+@api.route("/api/test", methods=["POST"])
+def test() -> tuple[Response, Literal[210, 404, 500]]:
+    celery_app.send_task("src.celery_app.tasks.add", [1])
+    return jsonify({"message": "ok"}), 200

@@ -21,7 +21,7 @@ class User(Base):
         self.roles = roles
 
     def __repr__(self) -> str:
-        return f"<User {self.name!r}>"
+        return f"<User {self.name}>"
 
     def to_dict(self) -> dict[str, Any]:
         return {
