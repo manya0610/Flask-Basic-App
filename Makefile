@@ -3,9 +3,11 @@ format:
 	ruff format src/ tests/ scripts/
 
 test:
-	python3 -m pytest --cov=src -s
+	. .env.test.rc; \
+	python3 -m pytest --cov=src -s;
 	
 test-coverage:
+	. .env.test.rc; \
 	python3 -m pytest --cov-report html:coverage --cov=src
 
 db_setup:
