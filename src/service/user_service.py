@@ -1,5 +1,4 @@
-from typing import List, Optional, Tuple
-
+from typing import List, Optional
 from src.database import user_repo
 from src.database.models import User
 
@@ -7,12 +6,12 @@ from src.database.models import User
 # Create a user
 def create_user(
     name: str, email: str, password: str, roles: list[str]
-) -> Optional[User]:
+) -> User:
     return user_repo.create_user(name, email, password, roles)
 
 
 # Get a user by ID
-def get_user(id: int) -> Optional[User]:
+def get_user(id: int) -> User:
     return user_repo.get_user(id)
 
 
@@ -28,10 +27,10 @@ def update_user(
     email: Optional[str] = None,
     password: Optional[str] = None,
     roles: Optional[list] = None,
-) -> Optional[User]:
+) -> User:
     return user_repo.update_user(id, name, email, password, roles)
 
 
 # Delete a user
-def delete_user(id: int) -> Tuple[bool, int]:
+def delete_user(id: int) -> int:
     return user_repo.delete_user(id)

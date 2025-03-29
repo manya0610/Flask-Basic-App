@@ -1,3 +1,5 @@
+import pytest
+from src.exceptions.db_exceptions import DataBaseError, NotFoundError
 from src.service.user_service import (
     create_user,
     delete_user,
@@ -23,19 +25,18 @@ def test_create_user_success():
 
 
 def test_create_user_duplicate_email():
-    # Arrange
-    name = "John Doe"
-    email = "john.doe@example.com"
-    password = "123456"
-    roles = ["user"]
+    with pytest.raises(DataBaseError):
+        # Arrange
+        name = "John Doe"
+        email = "john.doe@example.com"
+        password = "123456"
+        roles = ["user"]
 
-    user = create_user(name, email, password, roles)
+        user = create_user(name, email, password, roles)
 
-    # Act: Try to create another user with the same email
-    user = create_user("Jane Doe", email, password, roles)
-
-    # Assert
-    assert user is None  # Assuming duplicate email should return None
+        # Act: Try to create another user with the same email
+        user = create_user("Jane Doe", email, password, roles)
+        assert user is None
 
 
 # Test Case for `get_user`
@@ -59,10 +60,11 @@ def test_get_user_success():
 
 def test_get_user_not_found():
     # Act: Attempt to retrieve a non-existent user
-    retrieved_user = get_user(999)
+    with pytest.raises(NotFoundError):
+        retrieved_user = get_user(999)
 
-    # Assert
-    assert retrieved_user is None
+        # Assert
+        assert retrieved_user is None
 
 
 # Test Case for `list_users`
@@ -146,10 +148,9 @@ def test_update_user():
 
 def test_update_user_not_found():
     # Act: Try updating a non-existent user
-    updated_user = update_user(999, name="Updated Name")
+    with pytest.raises(NotFoundError):
+        update_user(999, name="Updated Name")
 
-    # Assert
-    assert updated_user is None
 
 
 # Test Case for `delete_user`
@@ -162,17 +163,16 @@ def test_delete_user_success():
     user = create_user(name, email, password, roles)
 
     # Act: Delete the user
-    success, user_id = delete_user(user.id)
+    row_count = delete_user(user.id)
 
     # Assert
-    assert success is True
-    assert user_id == user.id
+    assert row_count == user.id
 
 
 def test_delete_user_not_found():
     # Act: Try deleting a non-existent user
-    success, user_id = delete_user(999)
+    with pytest.raises(NotFoundError):
+        row_count = delete_user(999)
 
-    # Assert
-    assert success is False
-    assert user_id == 0
+        # Assert
+        assert row_count == 0

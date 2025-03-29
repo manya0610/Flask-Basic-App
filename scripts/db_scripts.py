@@ -32,40 +32,6 @@ def create_tables():
     subprocess.run(["alembic", "upgrade", "head"])
 
 
-# def create_user():
-#     app = create_app()
-#     with app.app_context():
-#         test_api_org_data = os.getenv("TEST_API_ORG_DATA", None)
-#         # create a default user according to env
-#         org_name, org_id, api_key = test_api_org_data.split(":")
-#         new_org = Org(org_id, org_name, api_key=api_key)
-#         db.session.add(new_org)
-#         try:
-#             db.session.commit()
-#         except Exception as e:
-#             print("exception while creating org")
-#             print(traceback.format_exc())
-#             return
-#         print("org created")
-#         test_api_user_data = os.getenv("TEST_API_USER_DATA", None)
-#         account_id, user_name, email, password, role = test_api_user_data.split(":")
-#         new_user = User(
-#             account_id,
-#             new_org.org_id,
-#             user_name,
-#             email,
-#             generate_password_hash(password, method="sha256"),
-#             role,
-#         )
-#         db.session.add(new_user)
-
-#         try:
-#             db.session.commit()
-#         except Exception as e:
-#             print("exception while creating user")
-#             print(traceback.format_exc())
-#             return
-#         print("user created")
 
 print("argument list", sys.argv)
 

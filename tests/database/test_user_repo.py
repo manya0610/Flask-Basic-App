@@ -1,3 +1,4 @@
+import pytest
 from src.database.user_repo import (
     create_user,
     delete_user,
@@ -5,7 +6,7 @@ from src.database.user_repo import (
     list_users,
     update_user,
 )
-
+from src.exceptions.db_exceptions import DataBaseError, NotFoundError
 
 # Test for create_user function
 def test_create_user_success():
@@ -26,14 +27,13 @@ def test_create_user_success():
 def test_create_user_failure():
     """Test the failure case for create_user (e.g., duplicate email or invalid input)."""
     # Let's assume there's a unique constraint on email
-    name = "John Doe"
-    email = "john.doe@example.com"
-    password = "123456"
-    roles = ["user"]
-    create_user(name, email, password, roles)
-    user = create_user(name, email, password, roles)  # Duplicate email
-
-    assert user is None
+    with pytest.raises(DataBaseError):
+        name = "John Doe"
+        email = "john.doe@example.com"
+        password = "123456"
+        roles = ["user"]
+        create_user(name, email, password, roles)
+        create_user(name, email, password, roles)  # Duplicate email
 
 
 # Test for get_user function
@@ -56,9 +56,9 @@ def test_get_user_found():
 
 def test_get_user_not_found():
     """Test the case where no user is found."""
-    user = get_user(999)
-
-    assert user is None
+    with pytest.raises(NotFoundError):
+        user = get_user(999)
+        assert user is None
 
 
 # Test for list_users function
@@ -135,16 +135,15 @@ def test_update_user_no_changes():
 
 def test_update_user_failure():
     """Test the case where an exception occurs during update_user."""
-    name = "John Doe"
-    email = "john.doe@example.com"
-    password = "123456"
-    roles = ["user"]
-    _created_user = create_user(name, email, password, roles)
+    with pytest.raises(NotFoundError):
+        name = "John Doe"
+        email = "john.doe@example.com"
+        password = "123456"
+        roles = ["user"]
+        _created_user = create_user(name, email, password, roles)
 
-    # Simulate failure (e.g., non-existent user ID)
-    user = update_user(999, name="Non-Existent", email="nonexistent@example.com")
-
-    assert user is None
+        # Simulate failure (e.g., non-existent user ID)
+        update_user(999, name="Non-Existent", email="nonexistent@example.com")
 
 
 # Test for delete_user function
@@ -156,24 +155,14 @@ def test_delete_user_success():
     roles = ["user"]
     created_user = create_user(name, email, password, roles)
 
-    success, rowcount = delete_user(created_user.id)
+    rowcount = delete_user(created_user.id)
 
-    assert success is True
     assert rowcount == 1
 
 
 def test_delete_user_not_found():
     """Test the case where no user is found to delete."""
-    success, rowcount = delete_user(999)
+    with pytest.raises(NotFoundError):
+        rowcount = delete_user(999)
 
-    assert success is False
-    assert rowcount == 0
-
-
-def test_delete_user_failure():
-    """Test the case where an exception occurs during delete_user."""
-    # Simulate a failure by deleting a user that doesn't exist
-    success, rowcount = delete_user(999)
-
-    assert success is False
-    assert rowcount == 0
+        assert rowcount == 0

@@ -16,3 +16,6 @@ drop_db:
 
 create_db:
 	python3 -m scripts.db_scripts create_db
+
+create_tables:
+	python3 -m scripts.db_scripts crate_tables
