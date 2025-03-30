@@ -32,7 +32,6 @@ def create_tables():
     subprocess.run(["alembic", "upgrade", "head"])
 
 
-
 print("argument list", sys.argv)
 
 for arg in sys.argv[1:]:

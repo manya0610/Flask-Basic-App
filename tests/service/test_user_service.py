@@ -1,4 +1,5 @@
 import pytest
+
 from src.exceptions.db_exceptions import DataBaseError, NotFoundError
 from src.service.user_service import (
     create_user,
@@ -150,7 +151,6 @@ def test_update_user_not_found():
     # Act: Try updating a non-existent user
     with pytest.raises(NotFoundError):
         update_user(999, name="Updated Name")
-
 
 
 # Test Case for `delete_user`

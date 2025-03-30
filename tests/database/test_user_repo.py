@@ -1,4 +1,5 @@
 import pytest
+
 from src.database.user_repo import (
     create_user,
     delete_user,
@@ -7,6 +8,7 @@ from src.database.user_repo import (
     update_user,
 )
 from src.exceptions.db_exceptions import DataBaseError, NotFoundError
+
 
 # Test for create_user function
 def test_create_user_success():

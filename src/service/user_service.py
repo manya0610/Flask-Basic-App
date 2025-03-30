@@ -1,12 +1,11 @@
 from typing import List, Optional
+
 from src.database import user_repo
 from src.database.models import User
 
 
 # Create a user
-def create_user(
-    name: str, email: str, password: str, roles: list[str]
-) -> User:
+def create_user(name: str, email: str, password: str, roles: list[str]) -> User:
     return user_repo.create_user(name, email, password, roles)
 
 
