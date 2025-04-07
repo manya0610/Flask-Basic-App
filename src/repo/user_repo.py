@@ -1,5 +1,6 @@
+from datetime import datetime
 import logging
-from typing import List, Optional, Sequence
+from typing import Optional, Sequence
 
 from sqlalchemy import delete, insert, select, update
 
@@ -24,7 +25,7 @@ def create_user(name: str, email: str, password: str, roles: list) -> User:
         return response
     except Exception as e:
         db_session.rollback()
-        logger.exception("Error creating user with email=%s: %s", email, str(e))
+        logger.exception("Error creating user with email=%s", email)
         raise DataBaseError from e
 
 
@@ -40,18 +41,18 @@ def get_user(id: int) -> User:
     except NotFoundError:
         raise
     except Exception as e:
-        logger.exception("Error while getting user with id=%s: %s", id, str(e))
+        logger.exception("Error while getting user with id=%s", id)
         raise DataBaseError from e
 
 
 # List all users, returning a list of User objects
-def list_users() -> List[User]:
+def list_users() -> list[User]:
     try:
         query = select(User)
         response: Sequence[User] = db_session.scalars(query).all()
-        return list(response)
+        return response
     except Exception as e:
-        logger.exception("Error while listing users: %s", str(e))
+        logger.exception("Error while listing users")
         raise DataBaseError from e
 
 
@@ -66,13 +67,17 @@ def update_user(
     try:
         values = {"name": name, "email": email, "password": password, "roles": roles}
         values = {key: value for key, value in values.items() if value is not None}
-
         if not values:
-            logger.warning("No fields provided to update for user with id=%d", id)
-            return None
-
+            logger.info("No fields to update for user with id=%s. Touching record.", id)
+            select(User).where(User.id == id)
+            query = select(User).where(User.id == id)
+            response: Optional[User] = db_session.scalars(query).one_or_none()
+            if response is None:
+                raise NotFoundError
+            return response
         query = update(User).where(User.id == id).values(values).returning(User)
-        response: Optional[User] = db_session.scalar(query)
+        response: Optional[User] =  db_session.scalar(query)
+        print(response)
         db_session.commit()
         if response is None:
             logger.warning("No user found with id=%s to update", id)
@@ -83,7 +88,7 @@ def update_user(
         raise
     except Exception as e:
         db_session.rollback()
-        logger.exception("Error updating user with id=%s: %s", id, str(e))
+        logger.exception("Error updating user with id=%s", id)
         raise DataBaseError from e
 
 
@@ -103,5 +108,5 @@ def delete_user(id: int) -> int:
         raise
     except Exception as e:
         db_session.rollback()
-        logger.exception("Error deleting user with id=%s: %s", id, str(e))
+        logger.exception("Error deleting user with id=%s", id)
         raise DataBaseError from e

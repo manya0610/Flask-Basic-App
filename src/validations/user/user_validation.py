@@ -1,30 +1,24 @@
-from typing import Any
-
 from pydantic import ValidationError
 
+from src.exceptions.request_exceptions import BadRequestError
 from src.validations.helper import pydantic_error_parser
 from src.validations.user.user_schema import UserSchema, UserUpdateSchema
 
 
-def validate_user(
-    data: dict[Any, Any],
-) -> tuple[bool, UserSchema]:
+def validate_user(data: dict) -> UserSchema:
     try:
-        user: UserSchema = UserSchema.model_validate(data)
-        return True, user
+        return UserSchema.model_validate(data)
     except ValidationError as e:
-        return False, pydantic_error_parser(e.errors())
-    except Exception as e:
-        print(e)
-        return False, {"error": "unknown exception"}
+        raise BadRequestError(error_dict=pydantic_error_parser(e.errors())) from e
+    except Exception:
+        raise
 
 
-def validate_user_update(data: dict):
+def validate_user_update(data: dict) -> UserSchema:
     try:
-        user = UserUpdateSchema.model_validate(data)
-        return True, user
+        return UserUpdateSchema.model_validate(data)
     except ValidationError as e:
-        return False, pydantic_error_parser(e.errors())
-    except Exception as e:
-        print(e)
-        return False, {"error": "unknown exception"}
+        # log_error(None, None, e.errors())
+        raise BadRequestError(error_dict=pydantic_error_parser(e.errors())) from e
+    except Exception:
+        raise

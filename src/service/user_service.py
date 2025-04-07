@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from src.database import user_repo
+from src.repo import user_repo
 from src.database.models import User
 
 

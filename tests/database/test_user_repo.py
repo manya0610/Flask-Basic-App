@@ -1,6 +1,6 @@
 import pytest
 
-from src.database.user_repo import (
+from src.repo.user_repo import (
     create_user,
     delete_user,
     get_user,
@@ -130,9 +130,9 @@ def test_update_user_no_changes():
     roles = ["user"]
     created_user = create_user(name, email, password, roles)
 
-    user = update_user(created_user.id)  # No name or email provided
+    user = update_user(created_user.id, name=None)  # No name or email provided
 
-    assert user is None
+    assert user.name == name
 
 
 def test_update_user_failure():
