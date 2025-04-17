@@ -1,6 +1,6 @@
 import pytest
 
-from src.exceptions.db_exceptions import DataBaseError, NotFoundError
+from src.exceptions.db_exceptions import DatabaseError, NotFoundError
 from src.service.user_service import (
     create_user,
     delete_user,
@@ -26,7 +26,7 @@ def test_create_user_success():
 
 
 def test_create_user_duplicate_email():
-    with pytest.raises(DataBaseError):
+    with pytest.raises(DatabaseError):
         # Arrange
         name = "John Doe"
         email = "john.doe@example.com"

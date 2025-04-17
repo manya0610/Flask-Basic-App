@@ -3,7 +3,7 @@ from typing import Any, Literal
 from flask import Blueprint, Response, jsonify, request
 
 from src.database.models import User
-from src.exceptions.db_exceptions import DataBaseError, NotFoundError
+from src.exceptions.db_exceptions import DatabaseError, NotFoundError
 from src.exceptions.request_exceptions import BadRequestError, InvalidJSONError
 from src.service import user_service
 from src.validations.user.user_validation import validate_user, validate_user_update
@@ -29,7 +29,7 @@ def create_user() -> tuple[Response, Literal[200, 400, 500]]:
     except (InvalidJSONError,  BadRequestError) as e:
         return jsonify({"message": BAD_REQUEST,
                         "error" :  e.error_dict}), 400
-    except DataBaseError:
+    except DatabaseError:
         return jsonify({"message": INTERNAL_SERVER_ERROR}), 500
 
 
@@ -42,7 +42,7 @@ def list_users() -> tuple[Response, Literal[200]]:
     except (InvalidJSONError,  BadRequestError) as e:
         return jsonify({"message": BAD_REQUEST,
                         "error" :  e.error_dict}), 400
-    except DataBaseError:
+    except DatabaseError:
         return jsonify({"message": INTERNAL_SERVER_ERROR}), 500
 
 
@@ -56,7 +56,7 @@ def get_user(id: int) -> tuple[Response, Literal[200, 400, 404, 500]]:
     except (InvalidJSONError,  BadRequestError) as e:
         return jsonify({"message": BAD_REQUEST,
                         "error" :  e.error_dict}), 400
-    except DataBaseError:
+    except DatabaseError:
         return jsonify({"message": INTERNAL_SERVER_ERROR}), 500
 
 
@@ -84,7 +84,7 @@ def update_user(id: int) -> tuple[Response, Literal[200, 400, 404, 500]]:
     except (InvalidJSONError,  BadRequestError) as e:
         return jsonify({"message": BAD_REQUEST,
                         "error" :  e.error_dict}), 400
-    except DataBaseError:
+    except DatabaseError:
         return jsonify({"message": INTERNAL_SERVER_ERROR}), 500
 
 
@@ -99,5 +99,5 @@ def delete_user(id: int) -> tuple[Response, Literal[210, 404, 500]]:
     except (InvalidJSONError,  BadRequestError) as e:
         return jsonify({"message": BAD_REQUEST,
                         "error" :  e.error_dict}), 400
-    except DataBaseError:
+    except DatabaseError:
         return jsonify({"message": INTERNAL_SERVER_ERROR}), 500

@@ -7,7 +7,7 @@ from src.repo.user_repo import (
     list_users,
     update_user,
 )
-from src.exceptions.db_exceptions import DataBaseError, NotFoundError
+from src.exceptions.db_exceptions import DatabaseError, NotFoundError
 
 
 # Test for create_user function
@@ -29,7 +29,7 @@ def test_create_user_success():
 def test_create_user_failure():
     """Test the failure case for create_user (e.g., duplicate email or invalid input)."""
     # Let's assume there's a unique constraint on email
-    with pytest.raises(DataBaseError):
+    with pytest.raises(DatabaseError):
         name = "John Doe"
         email = "john.doe@example.com"
         password = "123456"
@@ -122,17 +122,16 @@ def test_update_user_success():
     assert updated_user.roles == updated_roles
 
 
-def test_update_user_no_changes():
+def test_update_user_no_changes_raises_exception():
     """Test the case where no fields are provided to update_user."""
-    name = "John Doe"
-    email = "john.doe@example.com"
-    password = "123456"
-    roles = ["user"]
-    created_user = create_user(name, email, password, roles)
+    with pytest.raises(DatabaseError):
+        name = "John Doe"
+        email = "john.doe@example.com"
+        password = "123456"
+        roles = ["user"]
+        created_user = create_user(name, email, password, roles)
 
-    user = update_user(created_user.id, name=None)  # No name or email provided
-
-    assert user.name == name
+        update_user(created_user.id, name=None)  # No name or email provided
 
 
 def test_update_user_failure():

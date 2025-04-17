@@ -1,4 +1,4 @@
-class DataBaseError(Exception):
+class DatabaseError(Exception):
     """Generic DB exception"""
 
     error_dict = None
@@ -10,11 +10,11 @@ class DataBaseError(Exception):
     pass
 
 
-class DataBaseIntegrityError(DataBaseError):
+class DataBaseIntegrityError(DatabaseError):
     def __init__(self, *args, error_dict = None):
         super().__init__(*args, error_dict=error_dict)
     pass
 
 
-class NotFoundError(DataBaseError):
+class NotFoundError(DatabaseError):
     pass
