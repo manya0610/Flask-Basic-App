@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from src.repo import user_repo
 from src.database.models import User
@@ -15,7 +15,7 @@ def get_user(id: int) -> User:
 
 
 # List all users
-def list_users() -> List[User]:
+def list_users() -> list[User]:
     return user_repo.list_users()
 
 

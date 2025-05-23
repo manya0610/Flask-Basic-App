@@ -11,6 +11,6 @@ api.register_blueprint(user_blueprint)
 
 
 @api.route("/test", methods=["POST"])
-def test() -> tuple[Response, Literal[210, 404, 500]]:
+def test() -> tuple[Response, Literal[200]]:
     celery_app.send_task("src.celery_app.tasks.add", [1])
     return jsonify({"message": "ok"}), 200
