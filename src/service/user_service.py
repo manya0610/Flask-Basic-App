@@ -1,7 +1,7 @@
 from typing import Optional
 
-from src.repo import user_repo
 from src.database.models import User
+from src.repo import user_repo
 
 
 # Create a user
@@ -15,8 +15,8 @@ def get_user(id: int) -> User:
 
 
 # List all users
-def list_users() -> list[User]:
-    return user_repo.list_users()
+def list_users(limit: int = 100, offset: int = 0) -> list[User]:
+    return user_repo.list_users(limit, offset)
 
 
 # Update a user

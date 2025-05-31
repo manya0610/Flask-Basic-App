@@ -11,8 +11,9 @@ class DatabaseError(Exception):
 
 
 class DataBaseIntegrityError(DatabaseError):
-    def __init__(self, *args, error_dict = None):
+    def __init__(self, *args, error_dict=None):
         super().__init__(*args, error_dict=error_dict)
+
     pass
 
 

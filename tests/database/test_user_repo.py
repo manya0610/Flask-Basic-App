@@ -1,5 +1,6 @@
 import pytest
 
+from src.exceptions.db_exceptions import DatabaseError, NotFoundError
 from src.repo.user_repo import (
     create_user,
     delete_user,
@@ -7,7 +8,6 @@ from src.repo.user_repo import (
     list_users,
     update_user,
 )
-from src.exceptions.db_exceptions import DatabaseError, NotFoundError
 
 
 # Test for create_user function

@@ -45,9 +45,9 @@ def get_user(id: int) -> User:
 
 
 # List all users, returning a list of User objects
-def list_users() -> list[User]:
+def list_users(limit: int = 100, offset: int = 0) -> list[User]:
     try:
-        query = select(User)
+        query = select(User).limit(limit).offset(offset)
         response: Sequence[User] = db_session.scalars(query).all()
         return response
     except Exception as e:
@@ -68,9 +68,9 @@ def update_user(
         values = {key: value for key, value in values.items() if value is not None}
         if not values:
             logger.warning("No fields to update given for user with id %s", id)
-            raise DatabaseError(error_dict={"user" : "no fields to update"})
+            raise DatabaseError(error_dict={"user": "no fields to update"})
         query = update(User).where(User.id == id).values(values).returning(User)
-        response: Optional[User] =  db_session.scalar(query)
+        response: Optional[User] = db_session.scalar(query)
         db_session.commit()
         if response is None:
             logger.warning("No user found with id=%s to update", id)

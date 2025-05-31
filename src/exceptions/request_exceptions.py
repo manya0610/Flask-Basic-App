@@ -12,5 +12,3 @@ class InvalidJSONError(BadRequestError):
     def __init__(self, *args, error_dict=None):
         super().__init__(*args)
         self.error_dict = error_dict
-
-
